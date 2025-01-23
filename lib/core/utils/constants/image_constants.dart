@@ -1,0 +1,33 @@
+class ImageConstants {
+  static String onboardingBack = "assets/images/onboarding_back.png";
+  static String onboardingOne = "assets/images/onboarding_one.png";
+  static String onboardingTwo = "assets/images/onboarding_two.png";
+  static String splashTv = "assets/images/splash_tv.png";
+  static String route = "assets/images/route.png";
+  static String jungleWaiting = "assets/images/jungle_waiting.png";
+  static String lifeofPieSea = "assets/images/lifeofpiesea.jpg";
+  static String lifeOfPie = "assets/images/liffeofpie.png";
+  static String lootCase = "assets/images/lootcase.jpg";
+  static String riverDate = "assets/images/riverdate.jpg";
+  static String spiderMan = "assets/images/spiderman.png";
+  static String userProfile = "assets/images/user_profile.png";
+  static String wakanda = "assets/images/wakanda.png";
+  static String megician = "assets/images/megician.jpg";
+  static String spiderMultiverse = "assets/images/spider_multiverse.png";
+  static String chartDownload = "assets/images/chart_download.png";
+  static String share = "assets/images/share.png";
+  static String animationGenre = "assets/images/animation_genre.jpg";
+  static String fantasyGenre = "assets/images/fantasy.genre.jpg";
+  static String horrorGenre = "assets/images/horror_genre.jpg";
+  static String romanceGenre = "assets/images/romance_genre.jpg";
+  static String spidermanGenre = "assets/images/spiderman_genre.png";
+  static String tomcruiseGenre = "assets/images/tomcruise_genre.jpg";
+  static String folder = "assets/images/folder.png";
+  static String stackplay = "assets/images/stackplay.png";
+  static String batman = "assets/images/batman.png";
+  static String cartoon = "assets/images/cartoon.png";
+  static String catWomen = "assets/images/cat_women.png";
+  static String viewOne = "assets/images/view_one.png";
+  static String viewTwo = "assets/images/view_two.png";
+  static String viewThree = "assets/images/view_three.png";
+}
