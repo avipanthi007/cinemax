@@ -4,15 +4,13 @@ import 'package:cinemax/services/api/api_exception.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-
 class ApiBaseClientService {
   late Dio _dio;
-  bool _isRefreshing = false; // Flag to prevent multiple refresh calls
 
   ApiBaseClientService() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: ApiConstants.baseUrl, // Replace with your base URL
+        baseUrl: ApiConstants.baseUrl,
         connectTimeout: const Duration(seconds: 20),
         receiveTimeout: const Duration(seconds: 25),
         headers: {
@@ -35,10 +33,8 @@ class ApiBaseClientService {
         }
         return handler.next(options);
       },
-     
     ));
   }
-  
 
   Future<Response> request({
     required String endpoint,
@@ -56,9 +52,8 @@ class ApiBaseClientService {
         options: Options(method: method),
       );
       infoLog('$method $endpoint - Response: ${response.data}');
-        return response;
-    }  on DioException catch (e) {
-
+      return response;
+    } on DioException catch (e) {
       throw _handleError(e);
     }
   }
@@ -66,7 +61,8 @@ class ApiBaseClientService {
   ApiExceptions _handleError(DioException error) {
     switch (error.type) {
       case DioExceptionType.cancel:
-        throw ApiExceptions(message: 'Request cancelled', data: error.response?.data);
+        throw ApiExceptions(
+            message: 'Request cancelled', data: error.response?.data);
 
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.receiveTimeout:
@@ -76,10 +72,13 @@ class ApiBaseClientService {
       case DioExceptionType.badResponse:
         final statusCode = error.response?.statusCode;
         final data = error.response?.data;
-        final errorMessage = data is Map<String, dynamic> ? data['error'] : 'An error occurred';
+        final errorMessage =
+            data is Map<String, dynamic> ? data['error'] : 'An error occurred';
 
         if (statusCode == 400) {
-           throw BadRequestException(message: errorMessage, data: data); // Ensure detailed message is passed
+          throw BadRequestException(
+              message: errorMessage,
+              data: data); // Ensure detailed message is passed
         } else if (statusCode == 401) {
           throw UnauthorizedException(message: 'Unauthorized', data: data);
         } else if (statusCode == 503) {
@@ -91,14 +90,15 @@ class ApiBaseClientService {
           data: data,
         );
 
-
       case DioExceptionType.connectionError:
-
-        throw ApiExceptions(message:'A connection error occurred. Please check your network and try again.', data: error.message);
+        throw ApiExceptions(
+            message:
+                'A connection error occurred. Please check your network and try again.',
+            data: error.message);
 
       case DioExceptionType.unknown:
-               // Check if the error is an ApiException and extract the message
-      print(error.error);
+        // Check if the error is an ApiException and extract the message
+        print(error.error);
         if (error.error is ApiExceptions) {
           final apiException = error.error as ApiExceptions;
           throw UnknownException(
@@ -112,13 +112,8 @@ class ApiBaseClientService {
           message: error.error?.toString() ?? 'Unknown error',
           data: error.message,
         );
-        case DioExceptionType.badCertificate:
-
-
-
+      case DioExceptionType.badCertificate:
         throw UnknownException(message: 'Unknown error', data: error.message);
     }
   }
-
- 
 }

@@ -1,4 +1,5 @@
 import 'package:cinemax/core/theme/theme.dart';
+import 'package:cinemax/core/utils/injection.dart';
 import 'package:cinemax/services/routing/routing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -6,9 +7,10 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
 
-void main() async{
+void main() async {
   GoRouter router = AppRouting.router;
-   await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: ".env");
+  DependencyInjector.inject();
   runApp(MyApp(
     route: router,
   ));

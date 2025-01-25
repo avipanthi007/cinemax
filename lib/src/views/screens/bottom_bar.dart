@@ -1,4 +1,7 @@
 import 'package:cinemax/core/theme/colors.dart';
+import 'package:cinemax/src/controllers/now_playing_controller.dart';
+import 'package:cinemax/src/controllers/popular_movies_controller.dart';
+import 'package:cinemax/src/controllers/upcoming_movies_controller.dart';
 import 'package:cinemax/src/views/screens/home/downloads.dart';
 import 'package:cinemax/src/views/screens/home/home_page.dart';
 import 'package:cinemax/src/views/screens/home/profile.dart';
@@ -17,8 +20,19 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
+  final popularMovies = Get.find<PopularMoviesController>();
+  final upcomingMovies = Get.find<UpcomingMoviesController>();
+  final nowPlayingController = Get.find<NowPlayingController>();
 
   final List _screens = [HomeScreen(), Search(), Downloads(), Profile()];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    popularMovies.fetchPopularMovies();
+    upcomingMovies.fetchUpcomingMovies();
+     nowPlayingController.fetchNowPlayingMovies();
+  }
 
   void _onItemTapped(int index) {
     setState(() {

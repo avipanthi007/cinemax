@@ -1,6 +1,9 @@
 import 'package:cinemax/core/theme/colors.dart';
+import 'package:cinemax/core/utils/constants/api_constants.dart';
 import 'package:cinemax/core/utils/constants/image_constants.dart';
 import 'package:cinemax/services/routing/routing_name.dart';
+import 'package:cinemax/src/controllers/upcoming_movies_controller.dart';
+import 'package:cinemax/src/models/upcoming_movies.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +17,7 @@ class Upcoming extends StatefulWidget {
 }
 
 class _UpcomingState extends State<Upcoming> {
+  final upcomingMovies = Get.find<UpcomingMoviesController>();
   List<String> sort = [
     "All",
     "Comedy",
@@ -58,53 +62,63 @@ class _UpcomingState extends State<Upcoming> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              SizedBox(height: 1.h),
-              SizedBox(
-                height: 5.h,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: sort.length,
-                  itemBuilder: (context, index) {
-                    return Obx(
-                      () => _buildCategoryChip(
-                        onTap: () {
-                          isSelected.value = index;
+      body: upcomingMovies.upcomingMoviesData.isEmpty ||
+              upcomingMovies.isLoading.value
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: 1.h),
+                    SizedBox(
+                      height: 5.h,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: sort.length,
+                        itemBuilder: (context, index) {
+                          return Obx(
+                            () => _buildCategoryChip(
+                              onTap: () {
+                                isSelected.value = index;
+                              },
+                              label: sort[index],
+                              bgColor: isSelected.value == index
+                                  ? AppColors.softColor
+                                  : AppColors.black,
+                              color: isSelected.value == index
+                                  ? AppColors.primaryColor
+                                  : AppColors.white,
+                            ),
+                          );
                         },
-                        label: sort[index],
-                        bgColor: isSelected.value == index
-                            ? AppColors.softColor
-                            : AppColors.black,
-                        color: isSelected.value == index
-                            ? AppColors.primaryColor
-                            : AppColors.white,
                       ),
-                    );
-                  },
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: ListView.builder(
+                        itemCount: upcomingMovies.upcomingMoviesData.length,
+                        itemBuilder: (context, index) {
+                          Movie data = upcomingMovies
+                              .upcomingMoviesData[index]; // Corrected type
+                          return kRepeatedUpcomingContainer(
+                            context,
+                            img: ApiConstants.imageUrl +
+                                (data.posterPath ?? ""), // Handle null safely
+                            movieName: data.title ??
+                                "Unknown Title", // Handle null safely
+                            date:
+                                "November 11, 2022", // Placeholder; replace with actual date if available
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              kRepeatedUpcomingContainer(context, ontap: () {
-                context.push(RoutePath.viewUpcomingDetails);
-              },
-                  img: ImageConstants.batman,
-                  movieName: 'The Batman',
-                  date: "March 2,2022"),
-              kRepeatedUpcomingContainer(context,
-                  img: ImageConstants.wakanda,
-                  movieName: 'Black Panther: Wakanda Forever',
-                  date: "November 11, 2022 "),
-              kRepeatedUpcomingContainer(context,
-                  img: ImageConstants.cartoon,
-                  movieName: 'The Batman',
-                  date: "March 2,2022"),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 
@@ -126,7 +140,7 @@ class _UpcomingState extends State<Upcoming> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
-                      image: AssetImage(img), fit: BoxFit.cover)),
+                      image: NetworkImage(img), fit: BoxFit.cover)),
               child: Center(
                   child: Image.asset(
                 ImageConstants.stackplay,

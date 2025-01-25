@@ -19,22 +19,6 @@ class _DownloadsState extends State<Downloads> {
         appBar: AppBar(
           title: Row(
             children: [
-              GestureDetector(
-                onTap: () {
-                  context.pop();
-                },
-                child: Container(
-                  height: 5.h,
-                  width: 10.w,
-                  decoration: BoxDecoration(
-                      color: AppColors.softColor,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    size: 20,
-                  ),
-                ),
-              ),
               SizedBox(
                 width: 20.w,
               ),
@@ -47,14 +31,13 @@ class _DownloadsState extends State<Downloads> {
               ),
             ],
           ),
-        
         ),
         body: emptyList
             ? Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: 10.h,
                       width: 20.w,
                       child: Image.asset(
@@ -183,5 +166,4 @@ class _DownloadsState extends State<Downloads> {
       ),
     );
   }
-
 }

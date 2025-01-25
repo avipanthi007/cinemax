@@ -2,10 +2,11 @@ import 'package:cinemax/services/routing/routing_name.dart';
 import 'package:cinemax/src/views/screens/bottom_bar.dart';
 import 'package:cinemax/src/views/screens/home/genre.dart';
 import 'package:cinemax/src/views/screens/home/home_page.dart';
-import 'package:cinemax/src/views/screens/home/upcoming.dart';
+import 'package:cinemax/src/views/screens/upcoming_movies/upcoming.dart';
 import 'package:cinemax/src/views/screens/home/view_page.dart';
-import 'package:cinemax/src/views/screens/home/view_upcoming_details.dart';
+import 'package:cinemax/src/views/screens/upcoming_movies/view_upcoming_details.dart';
 import 'package:cinemax/src/views/screens/home/wishlist.dart';
+import 'package:cinemax/src/views/screens/most_popular/most_popular_movies.dart';
 import 'package:cinemax/src/views/screens/onboarding_screens/onboarding_one.dart';
 import 'package:cinemax/src/views/screens/onboarding_screens/onboarding_three.dart';
 import 'package:cinemax/src/views/screens/onboarding_screens/onboarding_two.dart';
@@ -78,6 +79,11 @@ class AppRouting {
             path: RoutePath.viewUpcomingDetails,
             builder: (context, state) {
               return const ViewUpcomingDetails();
+            }),
+              GoRoute(
+            path: RoutePath.popularMoviesPage,
+            builder: (context, state) {
+              return const MostPopularMovies();
             }),
       ]);
 }

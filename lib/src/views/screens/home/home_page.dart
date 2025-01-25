@@ -1,7 +1,14 @@
 import 'package:cinemax/core/theme/colors.dart';
+import 'package:cinemax/core/utils/constants/api_constants.dart';
 import 'package:cinemax/core/utils/constants/image_constants.dart';
 import 'package:cinemax/main.dart';
 import 'package:cinemax/services/routing/routing_name.dart';
+import 'package:cinemax/src/controllers/now_playing_controller.dart';
+import 'package:cinemax/src/controllers/popular_movies_controller.dart';
+import 'package:cinemax/src/controllers/upcoming_movies_controller.dart';
+import 'package:cinemax/src/models/now_playing_model.dart';
+import 'package:cinemax/src/models/popular_movies_model.dart';
+import 'package:cinemax/src/models/upcoming_movies.dart';
 import 'package:cinemax/src/views/widgets/customTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +25,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final popularMovies = Get.find<PopularMoviesController>();
+  final upcomingMovies = Get.find<UpcomingMoviesController>();
+  //final nowPlaying = Get.find<NowPlayingController>();
   List movieImages = [
     ImageConstants.lootCase,
     ImageConstants.wakanda,
@@ -87,74 +97,92 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(25),
               ),
               SizedBox(height: 3.h),
-              SizedBox(
-                height: 20.h,
-                child: CarouselSlider.builder(
-                  itemCount: movieImages.length,
-                  options: CarouselOptions(
-                    height: 20.h,
-                    autoPlay: false,
-                    onPageChanged: (index, reason) {
-                      currentIndex.value = index;
-                    },
-                  ),
-                  itemBuilder: (context, index, realIndex) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      width: 80.w,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        image: DecorationImage(
-                          image: AssetImage(movieImages[index]),
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            bottom: 20,
-                            left: 20,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Black Panther: Wakanda Forever',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'On March 2, 2022',
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: 2.h),
-              Obx(() {
-                return Center(
-                  child: AnimatedSmoothIndicator(
-                    activeIndex: currentIndex.value,
-                    count: movieImages.length,
-                    effect: ExpandingDotsEffect(
-                      activeDotColor: AppColors.primaryColor,
-                      dotColor: Colors.grey,
-                      dotHeight: 5.0,
-                      dotWidth: 5.0,
-                      expansionFactor: 2.5,
-                      spacing: 4.0,
-                    ),
-                  ),
-                );
-              }),
+              // Column(
+              //   children: nowPlaying.nowPlayingMoviesData.isEmpty ||
+              //           nowPlaying.isLoading.value
+              //       ? [
+              //           Center(
+              //             child: CircularProgressIndicator(),
+              //           )
+              //         ]
+              //       : [
+              //           SizedBox(
+              //             height: 20.h,
+              //             child: CarouselSlider.builder(
+              //               itemCount: nowPlaying.nowPlayingMoviesData.length,
+              //               options: CarouselOptions(
+              //                 height: 20.h,
+              //                 autoPlay: false,
+              //                 onPageChanged: (index, reason) {
+              //                   currentIndex.value = index;
+              //                 },
+              //               ),
+              //               itemBuilder: (context, index, realIndex) {
+              //                 var nowData =
+              //                     nowPlaying.nowPlayingMoviesData[index];
+              //                 return Container(
+              //                   margin: EdgeInsets.symmetric(horizontal: 10),
+              //                   width: 80.w,
+              //                   decoration: BoxDecoration(
+              //                     borderRadius: BorderRadius.circular(16),
+              //                     image: DecorationImage(
+              //                       image: NetworkImage(ApiConstants.imageUrl +
+              //                           (nowData.results[index].posterPath ??
+              //                               "")),
+              //                       fit: BoxFit.fill,
+              //                     ),
+              //                   ),
+              //                   child: Stack(
+              //                     children: [
+              //                       Positioned(
+              //                         bottom: 20,
+              //                         left: 20,
+              //                         child: Column(
+              //                           crossAxisAlignment:
+              //                               CrossAxisAlignment.start,
+              //                           children: [
+              //                             Text(
+              //                               nowData.results[index].title,
+              //                               style: TextStyle(
+              //                                   color: Colors.white,
+              //                                   fontSize: 16,
+              //                                   fontWeight: FontWeight.bold),
+              //                             ),
+              //                             Text(
+              //                               'On March 2, 2022',
+              //                               style: TextStyle(
+              //                                   color: Colors.grey,
+              //                                   fontSize: 12),
+              //                             ),
+              //                           ],
+              //                         ),
+              //                       ),
+              //                     ],
+              //                   ),
+              //                 );
+              //               },
+              //             ),
+              //           ),
+              //           SizedBox(height: 2.h),
+              //           Obx(() {
+              //             return Center(
+              //               child: AnimatedSmoothIndicator(
+              //                 activeIndex: currentIndex.value,
+              //                 count: nowPlaying.nowPlayingMoviesData.length,
+              //                 effect: ExpandingDotsEffect(
+              //                   activeDotColor: AppColors.primaryColor,
+              //                   dotColor: Colors.grey,
+              //                   dotHeight: 5.0,
+              //                   dotWidth: 5.0,
+              //                   expansionFactor: 2.5,
+              //                   spacing: 4.0,
+              //                 ),
+              //               ),
+              //             );
+              //           }),
+              //         ],
+              // ),
+             
               SizedBox(
                 height: 1.h,
               ),
@@ -204,7 +232,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         .copyWith(fontSize: 16.px),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.push(RoutePath.popularMoviesPage);
+                    },
                     child: Text('See All',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: AppColors.primaryColor,
@@ -212,32 +242,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 30.h,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildMovieCard(
-                        onTap: () {
-                          context.push(RoutePath.viewPage);
-                        },
-                        title: 'Spider-Man No Way Home',
-                        genre: 'Action',
-                        rating: 4.5,
-                        img: ImageConstants.spiderMan),
-                    _buildMovieCard(
-                        onTap: () {},
-                        title: 'Life of PI',
-                        genre: 'Action',
-                        rating: 4.5,
-                        img: ImageConstants.jungleWaiting),
-                    _buildMovieCard(
-                        onTap: () {},
-                        title: 'Riverdale',
-                        genre: 'Action',
-                        rating: 4.2,
-                        img: ImageConstants.riverDate),
-                  ],
+              Obx(
+                () => SizedBox(
+                  height: 30.h,
+                  child: popularMovies.popularMoviesData.isEmpty ||
+                          popularMovies.isLoading.value
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            PopularMoviesModel data =
+                                popularMovies.popularMoviesData[index];
+                            return _buildMovieCard(
+                                title: data.title.toString(),
+                                onTap: () {},
+                                genre: "Action",
+                                rating:
+                                    double.parse(data.voteAverage.toString()),
+                                img: ApiConstants.imageUrl +
+                                    data.posterPath.toString());
+                          }),
                 ),
               ),
               SizedBox(height: 2.h),
@@ -262,32 +289,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 30.h,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildMovieCard(
-                        onTap: () {
-                          // context.push(RoutePath.upcoming);
-                        },
-                        title: 'Spider-Man No Way Home',
-                        genre: 'Action',
-                        rating: 4.5,
-                        img: ImageConstants.spiderMan),
-                    _buildMovieCard(
-                        onTap: () {},
-                        title: 'Life of PI',
-                        genre: 'Action',
-                        rating: 4.5,
-                        img: ImageConstants.jungleWaiting),
-                    _buildMovieCard(
-                        onTap: () {},
-                        title: 'Riverdale',
-                        genre: 'Action',
-                        rating: 4.2,
-                        img: ImageConstants.riverDate),
-                  ],
+              Obx(
+                () => SizedBox(
+                  height: 30.h,
+                  child: upcomingMovies.upcomingMoviesData.isEmpty ||
+                          upcomingMovies.isLoading.value
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            Movie data =
+                                upcomingMovies.upcomingMoviesData[index];
+                            return _buildMovieCard(
+                              title: data.title ?? "Unknown Title",
+                              onTap: () {},
+                              genre: "Action",
+                              rating: data.voteAverage ?? 0.0,
+                              img: ApiConstants.imageUrl +
+                                  (data.posterPath ?? ""),
+                            );
+                          },
+                        ),
                 ),
               ),
             ],
@@ -343,7 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                 image: DecorationImage(
-                  image: AssetImage(img), // Replace with image
+                  image: NetworkImage(img), // Replace with image
                   fit: BoxFit.cover,
                 ),
               ),

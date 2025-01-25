@@ -10,4 +10,5 @@ class RoutePath {
   static String wishlist = "/wishlist";
   static String upcoming = "/upcoming";
   static String viewUpcomingDetails = "/viewUpcomingDetails";
+  static String popularMoviesPage = "/popularMoviesPage";
 }
